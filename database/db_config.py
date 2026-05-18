@@ -1,7 +1,7 @@
 import sqlite3
 
 db = sqlite3.connect(
-    "flowpilot.db",
+    "tasks.db",
     check_same_thread=False
 )
 
