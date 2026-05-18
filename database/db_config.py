@@ -1,12 +1,21 @@
-import mysql.connector
+import sqlite3
 
-db = mysql.connector.connect(
-    host="localhost",
-    user="root",
-    password="@IpshitaSri06",
-    database="flowpilot"
+db = sqlite3.connect(
+    "flowpilot.db",
+    check_same_thread=False
 )
 
 cursor = db.cursor()
 
-print("Database Connected Successfully")
+cursor.execute("""
+CREATE TABLE IF NOT EXISTS tasks (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT,
+    description TEXT,
+    priority TEXT,
+    status TEXT,
+    due_date TEXT
+)
+""")
+
+db.commit()
