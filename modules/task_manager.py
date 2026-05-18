@@ -6,7 +6,7 @@ def add_task(title, description, priority, status, due_date):
     query = """
     INSERT INTO tasks
     (title, description, priority, status, due_date)
-    VALUES (%s, %s, %s, %s, %s)
+    VALUES (?, ?, ?, ?, ?)
     """
 
     values = (
@@ -14,7 +14,7 @@ def add_task(title, description, priority, status, due_date):
         description,
         priority,
         status,
-        due_date
+        str(due_date)
     )
 
     cursor.execute(query, values)
@@ -28,27 +28,24 @@ def get_tasks():
 
     cursor.execute(query)
 
-    tasks = cursor.fetchall()
-
-    return tasks
+    return cursor.fetchall()
 
 
 def delete_task(task_id):
 
-    query = "DELETE FROM tasks WHERE id = %s"
+    query = "DELETE FROM tasks WHERE id = ?"
 
     cursor.execute(query, (task_id,))
 
     db.commit()
 
+
 def complete_task(task_id):
 
-    query = """
-    UPDATE tasks
-    SET status = 'Completed'
-    WHERE id = %s
-    """
+    query = "UPDATE tasks SET status = ? WHERE id = ?"
 
-    cursor.execute(query, (task_id,))
+    values = ("Completed", task_id)
+
+    cursor.execute(query, values)
 
     db.commit()
